@@ -1,7 +1,7 @@
 
 
 import java.io.File;
-
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -21,17 +21,10 @@ public class WordleGrid {
 		}
 		
 		WORDS = new ArrayList<String>();
-		Scanner myFile;
-        try
-        {
-            myFile = new Scanner(new File("wordle-answers-alphabetical.txt"));
-        }
-        catch (java.io.FileNotFoundException e)
-        {
-            System.out.println("FileNotFoundException: " +
-                e.getMessage());
-            return;
-        }
+		
+		InputStream iStream = getClass().getClassLoader().getResourceAsStream("wordle-answers-alphabetical.txt");
+		// System.out.println(iStream);
+		Scanner myFile = new Scanner(iStream);
 
         while (myFile.hasNextLine())
         {
