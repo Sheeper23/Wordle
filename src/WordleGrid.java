@@ -8,6 +8,7 @@ import java.util.Scanner;
 public class WordleGrid {
 	private String[][] board;
 	private final ArrayList<String> WORDS;
+	private final ArrayList<String> ALLOWED_GUESSES;
 	private String word;
 	private int guessNum;
 	private int colNum;
@@ -21,19 +22,30 @@ public class WordleGrid {
 		}
 		
 		WORDS = new ArrayList<String>();
+		ALLOWED_GUESSES = new ArrayList<String>();
 		
-		InputStream iStream = getClass().getClassLoader().getResourceAsStream("wordle-answers-alphabetical.txt");
-		// System.out.println(iStream);
-		Scanner myFile = new Scanner(iStream);
+		InputStream answerStream = getClass().getClassLoader().getResourceAsStream("wordle-answers-alphabetical.txt");
+		Scanner answersFile = new Scanner(answerStream);
 
-        while (myFile.hasNextLine())
+        while (answersFile.hasNextLine())
         {
-            String line = myFile.nextLine();
-            WORDS.add(line);
+            String line = answersFile.nextLine();
+            WORDS.add(line.toUpperCase());
         }
-        myFile.close();
+        answersFile.close();
 		
-		word = WORDS.get((int)(Math.random() * WORDS.size())).toUpperCase();
+        
+        InputStream masterStream = getClass().getClassLoader().getResourceAsStream("wordle-master-alphabetical.txt");
+		Scanner masterFile = new Scanner(masterStream);
+
+        while (masterFile.hasNextLine())
+        {
+            String line = masterFile.nextLine();
+            ALLOWED_GUESSES.add(line.toUpperCase());
+        }
+        masterFile.close();
+        
+		word = WORDS.get((int)(Math.random() * WORDS.size()));
 		System.out.println(word);
 	}
 	
@@ -53,7 +65,7 @@ public class WordleGrid {
 		if (guessNum > 5) return;
 		
 		if (guess.equals("\n")) {
-			if (colNum != 5) return;
+			if (colNum != 5 || !ALLOWED_GUESSES.contains(board[guessNum][0] + board[guessNum][1] + board[guessNum][2] + board[guessNum][3] + board[guessNum][4])) return;
 			
 			for (int i = 0; i < board[0].length; i++) {
 				if (board[guessNum][i].equals(""+word.charAt(i))) {
