@@ -29,6 +29,10 @@ public class WordleWindow extends JFrame {
         
         addKeyListener(new KeyListener() {
             public void keyPressed(KeyEvent e) {
+            	if (!(e.getKeyCode() == KeyEvent.VK_BACK_SPACE || e.getKeyChar() == '\n' || Character.isLetter(e.getKeyChar()))) {
+            		return;
+            	}
+            	
             	String key = e.getKeyCode() == KeyEvent.VK_BACK_SPACE ? "back" : ""+e.getKeyChar();
                 board.guess(key);
                 drawGrid();

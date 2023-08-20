@@ -50,7 +50,11 @@ public class WordleGrid {
 	}
 	
 	public void guess(String guess) {
+		if (guessNum > 5) return;
+		
 		if (guess.equals("\n")) {
+			if (colNum != 5) return;
+			
 			for (int i = 0; i < board[0].length; i++) {
 				if (board[guessNum][i].equals(""+word.charAt(i))) {
 					board[guessNum][i] = "g" + board[guessNum][i];
